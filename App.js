@@ -10,10 +10,14 @@ import { LogBox } from "react-native";
 import { BlogNavigator } from "./navigation/BlogNavigator";
 import blogReducer from "./store/reducers/blogReducer";
 import authReducer from "./store/reducers/authReducer";
+import blogLikeReducer from "./store/reducers/likeReducer";
+import commentReducer from "./store/reducers/commentReducer";
 
 const rootReducer = combineReducers({
     blogs: blogReducer,
     auth: authReducer,
+    blogLikes: blogLikeReducer,
+    blogComments: commentReducer,
 });
 
 const store = configureStore(

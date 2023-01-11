@@ -21,38 +21,32 @@ import { useIsFocused } from "@react-navigation/native";
 import { Dialog } from "react-native-simple-dialogs";
 
 import CustomHeaderButton from "../../components/UI/CustomHeaderButton";
-import BlogItem from "../../components/elements/BlogItem";
+import CommentItem from "../../components/elements/CommentItem";
 import Colors from "../../constants/Colors";
-import * as blogActions from "../../store/actions/blogActions";
+import * as commentActions from "../../store/actions/commentActions";
 import DialogModal from "../../components/UI/DialogModal";
 
-const BlogList = (props) => {
-    const { deleteBlog } = props.route.params;
+const BlogComments = (props) => {
+    const { blogId } = props.route.params;
+
     const [error, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
     const dispatch = useDispatch();
     const isFocused = useIsFocused();
 
-    const blogs = useSelector((state) => state.blogs.blogs);
     const { userId } = useSelector((state) => state.auth);
+    const comments = useSelector((state) => state.blogComments.comments);
+
+    console.log(comments);
 
     const [showAlert, setShowAlert] = useState(false);
 
-    useEffect(() => {
-        if (deleteBlog) {
-            setShowAlert(true);
-            setTimeout(() => {
-                setShowAlert(false);
-            }, 1550);
-        }
-    }, [deleteBlog]);
-
-    const loadBlogs = useCallback(async () => {
+    const loadBlogComments = useCallback(async () => {
         setError(null);
         setIsLoading(true);
         try {
-            await dispatch(blogActions.fetchBlogs());
+            await dispatch(commentActions.fetchBlogComments(blogId));
         } catch (err) {
             setError(err.message);
         }
@@ -60,8 +54,8 @@ const BlogList = (props) => {
     }, [dispatch, setError, setIsLoading]);
 
     useEffect(() => {
-        loadBlogs();
-    }, [dispatch, loadBlogs, isFocused]);
+        loadBlogComments();
+    }, [dispatch, loadBlogComments, isFocused]);
 
     useEffect(() => {
         if (error) {
@@ -87,7 +81,7 @@ const BlogList = (props) => {
     }
 
     const onRefresh = () => {
-        loadBlogs();
+        loadBlogComments();
     };
 
     const ItemSeparatorView = () => {
@@ -111,17 +105,11 @@ const BlogList = (props) => {
                 // ref={blogs}
                 ItemSeparatorComponent={ItemSeparatorView}
                 enableEmptySections={true}
-                data={blogs}
+                data={comments}
                 keyExtractor={(item) => item.id}
                 renderItem={(itemData) => (
                     <View style={{}}>
-                        <TouchableOpacity
-                            onPress={() => {
-                                visitBlogDetails(itemData.item);
-                            }}
-                        >
-                            <BlogItem item={itemData.item}></BlogItem>
-                        </TouchableOpacity>
+                        <CommentItem item={itemData.item} />
                     </View>
                 )}
                 refreshControl={
@@ -133,12 +121,12 @@ const BlogList = (props) => {
                 }
             />
 
-            <DialogModal
+            {/* <DialogModal
                 image={require("../../assets/icons8-waste.gif")}
                 message={"Blog successfully deleted!!!"}
                 showAlert={showAlert}
                 setShowAlert={setShowAlert}
-            />
+            /> */}
         </View>
     );
 };
@@ -152,29 +140,6 @@ export const screenOptions = (navData) => {
         //       marginLeft: -20,
         //    },
         headerTitle: "Dojo Blog",
-        headerLeft: () => (
-            <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-                <Item
-                    title="microblog"
-                    color={"white"}
-                    iconName="microblog"
-                    icon={FontAwesome5}
-                />
-            </HeaderButtons>
-        ),
-        headerRight: () => (
-            <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-                <Item
-                    title="create-outline"
-                    color={"white"}
-                    iconName="create"
-                    icon={Ionicons}
-                    onPress={() => {
-                        navData.navigation.navigate("CreateBlog");
-                    }}
-                />
-            </HeaderButtons>
-        ),
     };
 };
 
@@ -205,4 +170,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default BlogList;
+export default BlogComments;

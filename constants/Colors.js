@@ -4,6 +4,7 @@ export default {
     inputPlaceholderColor: "#000",
     inputTextColor: "#000",
     backGround: "#C9C9C9",
+    backGroundDarker: "#8C8C8C",
     blogItemBackground: "#fff",
     accentColor: "#FFC107",
     primary: "#2BA3F8",

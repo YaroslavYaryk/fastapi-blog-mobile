@@ -95,9 +95,9 @@ const CreateBlog = (props) => {
                                 borderColor: Colors.inputPlaceholderColor,
                             },
                         ]}
-                        value={body}
+                        value={title}
                         onChangeText={(value) => {
-                            setBody(value);
+                            setTitle(value);
                         }}
                         placeholderTextColor={Colors.inputPlaceholderColor}
                     />
@@ -125,9 +125,9 @@ const CreateBlog = (props) => {
                                 borderColor: Colors.inputPlaceholderColor,
                             },
                         ]}
-                        value={title}
+                        value={body}
                         onChangeText={(value) => {
-                            setTitle(value);
+                            setBody(value);
                         }}
                     />
                 </View>

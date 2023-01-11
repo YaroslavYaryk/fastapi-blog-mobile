@@ -5,7 +5,7 @@
 //  } from "../actions/authActions";
 
 const initialState = {
-    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2RhdGEiOnsiaWQiOjUsImVtYWlsIjoiZHVoYW5vdjIwMDNAZ21haWwuY29tIn0sImV4cGlyZXMiOjE2NzMzNzcxMjguMjg2OTg4N30.PAQKp1InD7CSHwVQI05miu6OIJs142aW7ktfhe6EfB8",
+    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2RhdGEiOnsiaWQiOjUsImVtYWlsIjoiZHVoYW5vdjIwMDNAZ21haWwuY29tIn0sImV4cGlyZXMiOjE2NzM0NjMyNTguNzY4NTcxOX0.OmraA48DKg_axAnjKXGFX9FJWmh067ZicRy8yr_jeDU",
     userId: "5",
 };
 
