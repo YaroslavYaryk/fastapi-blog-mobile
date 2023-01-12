@@ -1,16 +1,16 @@
 import { HOST, PORT } from "../../constants/server";
-import BlogLike from "../../models/BlogLike";
-export const READ_BLOG_LIKES = "READ_BLOG_LIKES";
+import CommentLike from "../../models/CommentLike";
+export const READ_COMMENT_LIKES = "READ_COMMENT_LIKES";
 export const READ_ONE_BLOG = "READ_ONE_BLOG";
-export const ADD_BLOG_LIKE = "ADD_BLOG_LIKE";
-export const DELETE_BLOG_LIKE = "DELETE_BLOG_LIKE";
+export const ADD_COMMENT_LIKE = "ADD_COMMENT_LIKE";
+export const DELETE_COMMENT_LIKE = "DELETE_COMMENT_LIKE";
 
-export const fetchBlogLikes = (blogId) => {
+export const fetchCommentLikes = (blogId) => {
     try {
         return async (dispatch, getState) => {
             var token = getState().auth.token;
             const response = await fetch(
-                `${HOST}:${PORT}/blogs/${blogId}/likes/`,
+                `${HOST}:${PORT}/blogs/${blogId}/comment-likes/`,
                 {
                     method: "GET",
                     headers: {
@@ -27,19 +27,19 @@ export const fetchBlogLikes = (blogId) => {
 
             const resData = await response.json();
 
-            const blogLikes = [];
+            const commentLikes = [];
             for (const key in resData) {
-                blogLikes.push(
-                    new BlogLike(
+                commentLikes.push(
+                    new CommentLike(
                         resData[key].id,
-                        resData[key].post_id,
+                        resData[key].comment_id,
                         resData[key].user_id
                     )
                 );
             }
             dispatch({
-                type: READ_BLOG_LIKES,
-                blogLikes: blogLikes,
+                type: READ_COMMENT_LIKES,
+                commentLikes: commentLikes,
             });
         };
     } catch (err) {
@@ -47,21 +47,24 @@ export const fetchBlogLikes = (blogId) => {
     }
 };
 
-export const likeUnlikeBlog = (blogId) => {
+export const likeUnlikeComment = (commentId) => {
     return async (dispatch, getState) => {
         var { token, userId } = getState().auth;
-        const response = await fetch(`${HOST}:${PORT}/blogs/${blogId}/like/`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-                Authorization: `Bearer ${token}`,
-            },
-            // body: JSON.stringify({
-            //     title: title,
-            //     body: body,
-            // }),
-        });
+        const response = await fetch(
+            `${HOST}:${PORT}/blogs/comment/${commentId}/like/`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    Authorization: `Bearer ${token}`,
+                },
+                // body: JSON.stringify({
+                //     title: title,
+                //     body: body,
+                // }),
+            }
+        );
 
         if (!response.ok) {
             const errorResData = await response.json();
@@ -72,21 +75,20 @@ export const likeUnlikeBlog = (blogId) => {
         const resData = await response.json();
         if (resData.id) {
             // like created
-            const blogLike = new BlogLike(
+            const commentLike = new CommentLike(
                 resData.id,
-                resData.post_id,
+                resData.comment_id,
                 resData.user_id
             );
             dispatch({
-                type: ADD_BLOG_LIKE,
-                blogLike: blogLike,
+                type: ADD_COMMENT_LIKE,
+                commentLike: commentLike,
             });
         } else {
             // like deleted
-
             dispatch({
-                type: DELETE_BLOG_LIKE,
-                blogId: blogId,
+                type: DELETE_COMMENT_LIKE,
+                commentId: commentId,
                 userId: userId,
             });
         }

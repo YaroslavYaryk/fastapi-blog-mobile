@@ -12,12 +12,14 @@ import blogReducer from "./store/reducers/blogReducer";
 import authReducer from "./store/reducers/authReducer";
 import blogLikeReducer from "./store/reducers/likeReducer";
 import commentReducer from "./store/reducers/commentReducer";
+import commentLikeReducer from "./store/reducers/commentLikeReducer";
 
 const rootReducer = combineReducers({
     blogs: blogReducer,
     auth: authReducer,
     blogLikes: blogLikeReducer,
     blogComments: commentReducer,
+    commentLikes: commentLikeReducer,
 });
 
 const store = configureStore(

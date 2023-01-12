@@ -1,5 +1,6 @@
 export default {
     primaryColor: "#f1356d",
+    primaryColorLight: "#e4bdc9",
     primarySecondColor: "#F57198",
     inputPlaceholderColor: "#000",
     inputTextColor: "#000",

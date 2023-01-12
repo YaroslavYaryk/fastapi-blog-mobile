@@ -17,64 +17,96 @@ import { AntDesign } from "@expo/vector-icons";
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
 const CommentItem = (props) => {
-    const { item } = props;
+    const {
+        item,
+        commentLikes,
+        userId,
+        handlePressUnpressLike,
+        setItemSelected,
+        itemSelected,
+        setReplySelected,
+        replySelected,
+        setCommentReplyTo,
+        setReplyToReplyObj,
+    } = props;
 
-    // const getShortBody = () => {
-    //     var shortedBody = "";
-    //     if (item.body.length > 200) {
-    //         shortedBody = `${item.body.slice(0, 201)}...`;
-    //     } else {
-    //         shortedBody = item.body;
-    //     }
-    //     return shortedBody;
-    // };
+    const getLikesForComment = (commentId) => {
+        return commentLikes.filter((el) => el.commentId == commentId).length;
+    };
 
-    // const getShortTitle = () => {
-    //     var shortedTitle = "";
-    //     if (item.title.length > 30) {
-    //         shortedTitle = `${item.title.slice(0, 31)}...`;
-    //     } else {
-    //         shortedTitle = item.title;
-    //     }
-    //     return shortedTitle;
-    // };
+    const isCommentLikedByUser = (commentId) => {
+        return commentLikes.filter(
+            (el) => el.commentId == commentId && el.userId == userId
+        ).length;
+    };
 
     return (
-        <View style={styles.blogWrapper}>
+        <View
+            style={[
+                styles.blogWrapper,
+                {
+                    borderWidth: itemSelected == item ? 2 : 0,
+                    borderColor:
+                        itemSelected == item ? Colors.primaryColor : "",
+                },
+            ]}
+        >
             <View style={[styles.blogInner]}>
-                <View style={styles.blogTittleBlockWrapper}>
-                    <View style={styles.blogTittleBlock}>
-                        <Text style={styles.blogTittleText}>
-                            {item.userName}
+                <TouchableOpacity
+                    onLongPress={() => {
+                        setItemSelected(item);
+                    }}
+                >
+                    <View style={styles.blogTittleBlockWrapper}>
+                        <View style={styles.blogTittleBlock}>
+                            <Text style={styles.blogTittleText}>
+                                {item.userName}
+                            </Text>
+                        </View>
+                        <View style={styles.blogAuthorBlock}>
+                            <View style={styles.likesBlogIcon}>
+                                {isCommentLikedByUser(item.id) ? (
+                                    <AntDesign
+                                        name="heart"
+                                        size={24}
+                                        color={Colors.primaryColor}
+                                        onPress={() => {
+                                            handlePressUnpressLike(item.id);
+                                        }}
+                                    />
+                                ) : (
+                                    <AntDesign
+                                        name="hearto"
+                                        size={24}
+                                        color={Colors.primaryColor}
+                                        onPress={() => {
+                                            handlePressUnpressLike(item.id);
+                                        }}
+                                    />
+                                )}
+                            </View>
+                            <Text style={styles.blogAuthorText}>
+                                {getLikesForComment(item.id)}
+                            </Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.blogContentBlock}>
+                        <Text style={styles.blogContentText}>
+                            {item.comment}
                         </Text>
                     </View>
-                    <View style={styles.blogAuthorBlock}>
-                        <View style={styles.likesBlogIcon}>
-                            {true ? (
-                                <AntDesign
-                                    name="heart"
-                                    size={24}
-                                    color={Colors.primaryColor}
-                                />
-                            ) : (
-                                <AntDesign
-                                    name="hearto"
-                                    size={24}
-                                    color={Colors.primaryColor}
-                                />
-                            )}
-                        </View>
-                        <Text style={styles.blogAuthorText}>1</Text>
-                    </View>
-                </View>
-
-                <View style={styles.blogContentBlock}>
-                    <Text style={styles.blogContentText}>{item.comment}</Text>
-                </View>
+                </TouchableOpacity>
                 <View style={styles.replyBlock}>
-                    <View style={styles.replyBlock}>
-                        <Text style={styles.replyBlockText}>Reply</Text>
-                    </View>
+                    <TouchableOpacity
+                        onPress={() => {
+                            setCommentReplyTo(item.id);
+                        }}
+                    >
+                        <View style={styles.replyBlock}>
+                            <Text style={styles.replyBlockText}>Reply</Text>
+                        </View>
+                    </TouchableOpacity>
                 </View>
             </View>
             <View>
@@ -83,53 +115,107 @@ const CommentItem = (props) => {
                     data={item.replies}
                     keyExtractor={(reply) => reply.id}
                     renderItem={(reply) => (
-                        <View style={styles.replyListBlock}>
+                        <View
+                            style={[
+                                styles.replyListBlock,
+                                {
+                                    borderWidth:
+                                        replySelected.id == reply.item.id
+                                            ? 0.5
+                                            : 0,
+                                    borderColor:
+                                        replySelected.id == reply.item.id
+                                            ? Colors.primaryColor
+                                            : "",
+                                },
+                            ]}
+                        >
                             <View style={styles.blogInner}>
-                                <View style={styles.blogTittleBlockWrapper}>
-                                    <View style={styles.blogTittleBlock}>
+                                <TouchableOpacity
+                                    onLongPress={() => {
+                                        setReplySelected({
+                                            id: reply.item.id,
+                                            parentId: item.id,
+                                        });
+                                    }}
+                                >
+                                    <View
+                                        style={[styles.blogTittleBlockWrapper]}
+                                    >
+                                        <View style={styles.blogTittleBlock}>
+                                            <Text
+                                                style={[
+                                                    styles.blogTittleText,
+                                                    { fontSize: 13 },
+                                                ]}
+                                            >
+                                                {reply.item.userName}
+                                            </Text>
+                                        </View>
+                                        <View style={styles.blogAuthorBlock}>
+                                            <View style={styles.likesBlogIcon}>
+                                                {isCommentLikedByUser(
+                                                    reply.item.id
+                                                ) ? (
+                                                    <AntDesign
+                                                        name="heart"
+                                                        size={18}
+                                                        color={
+                                                            Colors.primaryColor
+                                                        }
+                                                        onPress={() => {
+                                                            handlePressUnpressLike(
+                                                                reply.item.id
+                                                            );
+                                                        }}
+                                                    />
+                                                ) : (
+                                                    <AntDesign
+                                                        name="hearto"
+                                                        size={18}
+                                                        color={
+                                                            Colors.primaryColor
+                                                        }
+                                                        onPress={() => {
+                                                            handlePressUnpressLike(
+                                                                reply.item.id
+                                                            );
+                                                        }}
+                                                    />
+                                                )}
+                                            </View>
+                                            <Text style={styles.blogAuthorText}>
+                                                {getLikesForComment(
+                                                    reply.item.id
+                                                )}
+                                            </Text>
+                                        </View>
+                                    </View>
+
+                                    <View style={styles.blogContentBlock}>
                                         <Text
                                             style={[
-                                                styles.blogTittleText,
+                                                styles.blogContentText,
                                                 { fontSize: 13 },
                                             ]}
                                         >
-                                            {reply.item.userName}
+                                            {reply.item.comment}
                                         </Text>
                                     </View>
-                                    <View style={styles.blogAuthorBlock}>
-                                        <View style={styles.likesBlogIcon}>
-                                            {true ? (
-                                                <AntDesign
-                                                    name="heart"
-                                                    size={18}
-                                                    color={Colors.primaryColor}
-                                                />
-                                            ) : (
-                                                <AntDesign
-                                                    name="hearto"
-                                                    size={18}
-                                                    color={Colors.primaryColor}
-                                                />
-                                            )}
-                                        </View>
-                                        <Text style={styles.blogAuthorText}>
-                                            1
-                                        </Text>
-                                    </View>
-                                </View>
+                                </TouchableOpacity>
 
-                                <View style={styles.blogContentBlock}>
-                                    <Text
-                                        style={[
-                                            styles.blogContentText,
-                                            { fontSize: 13 },
-                                        ]}
-                                    >
-                                        {item.comment}
-                                    </Text>
-                                </View>
                                 <View style={styles.replyBlock}>
-                                    <View style={styles.replyBlock}>
+                                    <TouchableOpacity
+                                        style={styles.replyBlock}
+                                        onPress={() => {
+                                            setReplyToReplyObj({
+                                                id: reply.item.id,
+                                                parentId: item.id,
+                                                userName: reply.item.userName,
+                                            });
+                                            setCommentReplyTo(item.id);
+                                        }}
+                                    >
                                         <Text
                                             style={[
                                                 styles.replyBlockText,
@@ -138,7 +224,7 @@ const CommentItem = (props) => {
                                         >
                                             Reply
                                         </Text>
-                                    </View>
+                                    </TouchableOpacity>
                                 </View>
                             </View>
                         </View>
@@ -186,8 +272,8 @@ const styles = StyleSheet.create({
         fontSize: 13,
     },
     replyListBlock: {
-        marginLeft: 20,
-        marginTop: 5,
+        paddingLeft: 20,
+        padding: 5,
     },
 });
 

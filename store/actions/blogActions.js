@@ -10,7 +10,6 @@ export const fetchBlogs = () => {
     try {
         return async (dispatch, getState) => {
             var token = getState().auth.token;
-            console.log(`${HOST}:${PORT}/blogs/`);
             const response = await fetch(`${HOST}:${PORT}/blogs/`, {
                 method: "GET",
                 headers: {
@@ -54,7 +53,6 @@ export const fetchOneBlog = (id) => {
     try {
         return async (dispatch, getState) => {
             var token = getState().auth.token;
-            console.log(`${HOST}:${PORT}/blogs/${id}/`);
             const response = await fetch(`${HOST}:${PORT}/blogs/${id}/`, {
                 method: "GET",
                 headers: {
@@ -93,7 +91,6 @@ export const fetchOneBlog = (id) => {
 export const createBlog = (title, body) => {
     return async (dispatch, getState) => {
         var token = getState().auth.token;
-        console.log(title, body);
         const response = await fetch(`${HOST}:${PORT}/blogs/`, {
             method: "POST",
             headers: {
