@@ -11,11 +11,11 @@ import {
     LayoutAnimation,
     Animated,
 } from "react-native";
-import Colors from "../../constants/Colors";
-
-const SCREEN_WIDTH = Dimensions.get("window").width;
+import { useTheme } from "@react-navigation/native";
 
 const BlogItem = (props) => {
+    const { colors } = useTheme();
+
     const { item } = props;
 
     const getShortBody = () => {
@@ -39,16 +39,31 @@ const BlogItem = (props) => {
     };
 
     return (
-        <View style={styles.blogWrapper}>
+        <View
+            style={[
+                styles.blogWrapper,
+                { backgroundColor: colors.blogItemBackground },
+            ]}
+        >
             <View style={styles.blogInner}>
                 <View style={styles.blogTittleBlockWrapper}>
                     <View style={styles.blogTittleBlock}>
-                        <Text style={styles.blogTittleText}>
+                        <Text
+                            style={[
+                                styles.blogTittleText,
+                                { color: colors.primaryColor },
+                            ]}
+                        >
                             {getShortTitle()}
                         </Text>
                     </View>
                     <View style={styles.blogAuthorBlock}>
-                        <Text style={styles.blogAuthorText}>
+                        <Text
+                            style={[
+                                styles.blogAuthorText,
+                                { color: colors.primarySecondColor },
+                            ]}
+                        >
                             {item.authorName}
                         </Text>
                     </View>
@@ -64,7 +79,6 @@ const BlogItem = (props) => {
 
 const styles = StyleSheet.create({
     blogWrapper: {
-        backgroundColor: Colors.blogItemBackground,
         margin: 5,
         padding: 10,
         borderRadius: 5,
@@ -79,12 +93,10 @@ const styles = StyleSheet.create({
         marginVertical: 5,
     },
     blogTittleText: {
-        color: Colors.primaryColor,
         fontWeight: "500",
         fontSize: 16,
     },
     blogAuthorText: {
-        color: Colors.primarySecondColor,
         fontWeight: "500",
     },
 });

@@ -13,10 +13,13 @@ import {
 } from "react-native";
 import Colors from "../../constants/Colors";
 import { AntDesign } from "@expo/vector-icons";
+import { useTheme } from "@react-navigation/native";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
 const CommentItem = (props) => {
+    const { colors } = useTheme();
+
     const {
         item,
         commentLikes,
@@ -47,7 +50,8 @@ const CommentItem = (props) => {
                 {
                     borderWidth: itemSelected == item ? 2 : 0,
                     borderColor:
-                        itemSelected == item ? Colors.primaryColor : "",
+                        itemSelected == item ? colors.primaryColor : "",
+                    backgroundColor: colors.blogItemBackground,
                 },
             ]}
         >
@@ -59,7 +63,12 @@ const CommentItem = (props) => {
                 >
                     <View style={styles.blogTittleBlockWrapper}>
                         <View style={styles.blogTittleBlock}>
-                            <Text style={styles.blogTittleText}>
+                            <Text
+                                style={[
+                                    styles.blogTittleText,
+                                    { color: colors.primaryColor },
+                                ]}
+                            >
                                 {item.userName}
                             </Text>
                         </View>
@@ -69,7 +78,7 @@ const CommentItem = (props) => {
                                     <AntDesign
                                         name="heart"
                                         size={24}
-                                        color={Colors.primaryColor}
+                                        color={colors.primaryColor}
                                         onPress={() => {
                                             handlePressUnpressLike(item.id);
                                         }}
@@ -78,14 +87,19 @@ const CommentItem = (props) => {
                                     <AntDesign
                                         name="hearto"
                                         size={24}
-                                        color={Colors.primaryColor}
+                                        color={colors.primaryColor}
                                         onPress={() => {
                                             handlePressUnpressLike(item.id);
                                         }}
                                     />
                                 )}
                             </View>
-                            <Text style={styles.blogAuthorText}>
+                            <Text
+                                style={[
+                                    styles.blogAuthorText,
+                                    { color: colors.primarySecondColor },
+                                ]}
+                            >
                                 {getLikesForComment(item.id)}
                             </Text>
                         </View>
@@ -104,7 +118,14 @@ const CommentItem = (props) => {
                         }}
                     >
                         <View style={styles.replyBlock}>
-                            <Text style={styles.replyBlockText}>Reply</Text>
+                            <Text
+                                style={[
+                                    styles.replyBlockText,
+                                    { color: colors.backGroundDarker },
+                                ]}
+                            >
+                                Reply
+                            </Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -125,7 +146,7 @@ const CommentItem = (props) => {
                                             : 0,
                                     borderColor:
                                         replySelected.id == reply.item.id
-                                            ? Colors.primaryColor
+                                            ? colors.primaryColor
                                             : "",
                                 },
                             ]}
@@ -146,7 +167,10 @@ const CommentItem = (props) => {
                                             <Text
                                                 style={[
                                                     styles.blogTittleText,
-                                                    { fontSize: 13 },
+                                                    {
+                                                        fontSize: 13,
+                                                        color: colors.primaryColor,
+                                                    },
                                                 ]}
                                             >
                                                 {reply.item.userName}
@@ -161,7 +185,7 @@ const CommentItem = (props) => {
                                                         name="heart"
                                                         size={18}
                                                         color={
-                                                            Colors.primaryColor
+                                                            colors.primaryColor
                                                         }
                                                         onPress={() => {
                                                             handlePressUnpressLike(
@@ -174,7 +198,7 @@ const CommentItem = (props) => {
                                                         name="hearto"
                                                         size={18}
                                                         color={
-                                                            Colors.primaryColor
+                                                            colors.primaryColor
                                                         }
                                                         onPress={() => {
                                                             handlePressUnpressLike(
@@ -184,7 +208,14 @@ const CommentItem = (props) => {
                                                     />
                                                 )}
                                             </View>
-                                            <Text style={styles.blogAuthorText}>
+                                            <Text
+                                                style={[
+                                                    styles.blogAuthorText,
+                                                    {
+                                                        color: colors.primarySecondColor,
+                                                    },
+                                                ]}
+                                            >
                                                 {getLikesForComment(
                                                     reply.item.id
                                                 )}
@@ -219,7 +250,10 @@ const CommentItem = (props) => {
                                         <Text
                                             style={[
                                                 styles.replyBlockText,
-                                                { fontSize: 12 },
+                                                {
+                                                    fontSize: 12,
+                                                    color: colors.backGroundDarker,
+                                                },
                                             ]}
                                         >
                                             Reply
@@ -237,7 +271,6 @@ const CommentItem = (props) => {
 
 const styles = StyleSheet.create({
     blogWrapper: {
-        backgroundColor: Colors.blogItemBackground,
         margin: 5,
         padding: 10,
         borderRadius: 5,
@@ -252,12 +285,10 @@ const styles = StyleSheet.create({
         marginVertical: 5,
     },
     blogTittleText: {
-        color: Colors.primaryColor,
         fontWeight: "500",
         fontSize: 16,
     },
     blogAuthorText: {
-        color: Colors.primarySecondColor,
         fontWeight: "500",
     },
     blogContentBlock: {
@@ -267,7 +298,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     replyBlockText: {
-        color: Colors.backGroundDarker,
         fontWeight: "600",
         fontSize: 13,
     },

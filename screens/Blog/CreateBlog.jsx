@@ -14,17 +14,14 @@ import {
     RefreshControl,
     TextInput,
 } from "react-native";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import { Ionicons } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
+import { useTheme } from "@react-navigation/native";
 
-import CustomHeaderButton from "../../components/UI/CustomHeaderButton";
-import Colors from "../../constants/Colors";
 import * as blogActions from "../../store/actions/blogActions";
 
 const CreateBlog = (props) => {
+    const { colors } = useTheme();
     const [error, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -33,7 +30,6 @@ const CreateBlog = (props) => {
 
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
-    console.log(title, body);
     const dispatch = useDispatch();
     const isFocused = useIsFocused();
 
@@ -68,14 +64,21 @@ const CreateBlog = (props) => {
 
     if (isLoading) {
         return (
-            <View style={styles.centered}>
-                <ActivityIndicator size="large" color={Colors.headerBold} />
+            <View
+                style={[
+                    styles.centered,
+                    { backgroundColor: colors.backGround },
+                ]}
+            >
+                <ActivityIndicator size="large" color={colors.headerBold} />
             </View>
         );
     }
 
     return (
-        <View style={styles.container}>
+        <View
+            style={[styles.container, { backgroundColor: colors.backGround }]}
+        >
             <View>
                 <View style={styles.inputBlock}>
                     <TextInput
@@ -91,15 +94,15 @@ const CreateBlog = (props) => {
                         style={[
                             styles.input,
                             {
-                                color: Colors.inputTextColor,
-                                borderColor: Colors.inputPlaceholderColor,
+                                color: colors.inputTextColor,
+                                borderColor: colors.inputPlaceholderColor,
                             },
                         ]}
                         value={title}
                         onChangeText={(value) => {
                             setTitle(value);
                         }}
-                        placeholderTextColor={Colors.inputPlaceholderColor}
+                        placeholderTextColor={colors.inputPlaceholderColor}
                     />
                 </View>
                 <View style={styles.inputBlock}>
@@ -115,14 +118,14 @@ const CreateBlog = (props) => {
                         multiline
                         numberOfLines={4}
                         initiallyValid={false}
-                        cursorColor={Colors.primaryColor}
-                        selectionColor={Colors.primarySecondColor}
-                        placeholderTextColor={Colors.inputPlaceholderColor}
+                        cursorColor={colors.primaryColor}
+                        selectionColor={colors.primarySecondColor}
+                        placeholderTextColor={colors.inputPlaceholderColor}
                         style={[
                             styles.input,
                             {
-                                color: Colors.inputTextColor,
-                                borderColor: Colors.inputPlaceholderColor,
+                                color: colors.inputTextColor,
+                                borderColor: colors.inputPlaceholderColor,
                             },
                         ]}
                         value={body}
@@ -136,8 +139,9 @@ const CreateBlog = (props) => {
                         styles.saveButtonBlock,
                         {
                             backgroundColor: disabledButton
-                                ? Colors.primarySecondColor
-                                : Colors.primaryColor,
+                                ? colors.primarySecondColor
+                                : colors.primaryColor,
+                            borderColor: colors.blogItemBackground,
                         },
                     ]}
                 >
@@ -146,7 +150,14 @@ const CreateBlog = (props) => {
                         onPress={handleCreateBlog}
                     >
                         <View style={styles.saveButtonBlockInnew}>
-                            <Text style={styles.saveButtonText}>Save</Text>
+                            <Text
+                                style={[
+                                    styles.saveButtonText,
+                                    { color: colors.blogItemBackground },
+                                ]}
+                            >
+                                Save
+                            </Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -164,7 +175,7 @@ export const screenOptions = (navData) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.backGround,
+
         zIndex: 10,
         paddingTop: 20,
     },
@@ -172,7 +183,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: Colors.backGround,
     },
 
     inputBlock: {
@@ -193,14 +203,13 @@ const styles = StyleSheet.create({
         margin: 14,
         alignItems: "center",
         borderWidth: 1,
-        borderColor: Colors.blogItemBackground,
+
         borderRadius: 10,
     },
     saveButtonBlockInnew: {
         padding: 10,
     },
     saveButtonText: {
-        color: Colors.blogItemBackground,
         fontSize: 20,
     },
 });

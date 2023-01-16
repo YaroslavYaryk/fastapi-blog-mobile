@@ -6,6 +6,7 @@ import {
     StyleSheet,
     TouchableOpacity,
 } from "react-native";
+import Colors from "../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "@react-navigation/native";
 
@@ -15,7 +16,6 @@ const INPUT_BLUR = "INPUT_BLUR";
 const inputReducer = (state, action) => {
     switch (action.type) {
         case INPUT_CHANGE:
-            console.log(action);
             return {
                 ...state,
                 value: action.value,
@@ -99,6 +99,7 @@ const Input = (props) => {
         if (props.id == "price" && !text.match(/^-?\d*(\.\d+)?$/)) {
             isValid = false;
         }
+
         dispatch({ type: INPUT_CHANGE, value: text, isValid: isValid });
     };
 
@@ -117,7 +118,7 @@ const Input = (props) => {
 
     return (
         <View style={styles.formControl}>
-            {props.label && <Text style={styles.label}>{props.label}</Text>}
+            <Text style={styles.label}>{props.label}</Text>
             <TextInput
                 style={[
                     styles.input,
@@ -173,7 +174,6 @@ const Input = (props) => {
 const styles = StyleSheet.create({
     formControl: {
         width: "100%",
-        padding: 0,
     },
     label: {
         // fontFamily: "open-sans",
@@ -197,6 +197,7 @@ const styles = StyleSheet.create({
         right: 35,
     },
     errorText: {
+        fontFamily: "open-sans",
         color: "red",
         fontSize: 13,
     },

@@ -27,12 +27,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
 import { Dialog } from "react-native-simple-dialogs";
 import { AntDesign } from "@expo/vector-icons";
+import { useTheme } from "@react-navigation/native";
 
 import DialogModal from "../../components/UI/DialogModal";
 import Colors from "../../constants/Colors";
 import * as blogActions from "../../store/actions/blogActions";
 
 const EditBlog = (props) => {
+    const { colors } = useTheme();
+
     const { blogId } = props.route.params;
 
     const blogDetails = useSelector((state) => state.blogs.blogDetails);
@@ -42,8 +45,10 @@ const EditBlog = (props) => {
     const [disabledButton, setDisabledButton] = useState(true);
     const [showAlert, setShowAlert] = useState(false);
 
-    const [title, setTitle] = useState(blogDetails.title);
-    const [body, setBody] = useState(blogDetails.body);
+    const [title, setTitle] = useState(
+        blogDetails.title ? blogDetails.title : ""
+    );
+    const [body, setBody] = useState(blogDetails.body ? blogDetails.body : "");
     const dispatch = useDispatch();
     const isFocused = useIsFocused();
 
@@ -102,14 +107,21 @@ const EditBlog = (props) => {
 
     if (isLoading) {
         return (
-            <View style={styles.centered}>
-                <ActivityIndicator size="large" color={Colors.headerBold} />
+            <View
+                style={[
+                    styles.centered,
+                    { backgroundColor: colors.backGround },
+                ]}
+            >
+                <ActivityIndicator size="large" color={colors.headerBold} />
             </View>
         );
     }
 
     return (
-        <View style={styles.container}>
+        <View
+            style={[styles.container, { backgroundColor: colors.backGround }]}
+        >
             <ScrollView>
                 <View style={{}}>
                     <View style={styles.inputBlock}>
@@ -123,21 +135,21 @@ const EditBlog = (props) => {
                             contextMenuHidden={false}
                             initiallyValid={false}
                             placeholder="Title"
-                            cursorColor={Colors.primarySecondColor}
-                            selectionColor={Colors.primarySecondColor}
+                            cursorColor={colors.primarySecondColor}
+                            selectionColor={colors.primarySecondColor}
                             selectTextOnFocus={true}
                             style={[
                                 styles.input,
                                 {
-                                    color: Colors.inputTextColor,
-                                    borderColor: Colors.inputPlaceholderColor,
+                                    color: colors.inputTextColor,
+                                    borderColor: colors.inputPlaceholderColor,
                                 },
                             ]}
                             value={title}
                             onChangeText={(value) => {
                                 setTitle(value);
                             }}
-                            placeholderTextColor={Colors.inputPlaceholderColor}
+                            placeholderTextColor={colors.inputPlaceholderColor}
                         />
                     </View>
                     <View style={styles.inputBlock}>
@@ -152,15 +164,15 @@ const EditBlog = (props) => {
                             multiline
                             numberOfLines={4}
                             initiallyValid={false}
-                            cursorColor={Colors.primaryColor}
-                            selectionColor={Colors.primarySecondColor}
-                            placeholderTextColor={Colors.inputPlaceholderColor}
+                            cursorColor={colors.primaryColor}
+                            selectionColor={colors.primarySecondColor}
+                            placeholderTextColor={colors.inputPlaceholderColor}
                             selectTextOnFocus={true}
                             style={[
                                 styles.input,
                                 {
-                                    color: Colors.inputTextColor,
-                                    borderColor: Colors.inputPlaceholderColor,
+                                    color: colors.inputTextColor,
+                                    borderColor: colors.inputPlaceholderColor,
                                 },
                             ]}
                             value={body}
@@ -174,8 +186,9 @@ const EditBlog = (props) => {
                             styles.saveButtonBlock,
                             {
                                 backgroundColor: disabledButton
-                                    ? Colors.primarySecondColor
-                                    : Colors.primaryColor,
+                                    ? colors.primarySecondColor
+                                    : colors.primaryColor,
+                                borderColor: colors.blogItemBackground,
                             },
                         ]}
                     >
@@ -184,39 +197,19 @@ const EditBlog = (props) => {
                             onPress={handleEditBlog}
                         >
                             <View style={styles.saveButtonBlockInnew}>
-                                <Text style={styles.saveButtonText}>Save</Text>
+                                <Text
+                                    style={[
+                                        styles.saveButtonText,
+                                        { color: colors.blogItemBackground },
+                                    ]}
+                                >
+                                    Save
+                                </Text>
                             </View>
                         </TouchableOpacity>
                     </View>
                 </View>
             </ScrollView>
-            {/* <Dialog
-                visible={showAlert}
-                // title="Message"
-                // titleStyle={{ fontSize: 15 }}
-                onTouchOutside={() => setShowAlert(false)}
-                animationType={"fade"}
-                dialogStyle={{
-                    color: Colors.primaryColor,
-                    borderRadius: 10,
-                    // backgroundColor: Colors.primarySecondColor,
-                }}
-                contentStyle={{ borderRadius: 10 }}
-            >
-                <View style={{ alignItems: "center" }}>
-                    <View style={styles.modalContentIcon}>
-                        <Image
-                            style={{ width: "100%", height: "100%" }}
-                            source={require("../../assets/icons8-checkmark.gif")}
-                        />
-                    </View>
-                    <View style={styles.modalContentText}>
-                        <Text style={{ fontSize: 18 }}>
-                            Blog successfully changed!!!
-                        </Text>
-                    </View>
-                </View>
-            </Dialog> */}
             <DialogModal
                 image={require("../../assets/icons8-checkmark.gif")}
                 message={"Blog successfully changed!!!"}
@@ -236,7 +229,7 @@ export const screenOptions = (navData) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.backGround,
+
         zIndex: 10,
         paddingTop: 20,
     },
@@ -244,7 +237,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: Colors.backGround,
     },
 
     inputBlock: {
@@ -266,14 +258,13 @@ const styles = StyleSheet.create({
         margin: 14,
         alignItems: "center",
         borderWidth: 1,
-        borderColor: Colors.blogItemBackground,
+
         borderRadius: 10,
     },
     saveButtonBlockInnew: {
         padding: 10,
     },
     saveButtonText: {
-        color: Colors.blogItemBackground,
         fontSize: 20,
     },
     modalContentIcon: {

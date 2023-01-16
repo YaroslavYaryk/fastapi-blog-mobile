@@ -22,17 +22,16 @@ import { Dialog } from "react-native-simple-dialogs";
 import { AntDesign } from "@expo/vector-icons";
 import InputBar from "@paraboly/react-native-input-bar";
 import { TextInput } from "react-native-paper";
-import { Feather } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
+import { useTheme } from "@react-navigation/native";
 
-import CustomHeaderButton from "../../components/UI/CustomHeaderButton";
 import CommentItem from "../../components/elements/CommentItem";
-import Colors from "../../constants/Colors";
 import * as commentActions from "../../store/actions/commentActions";
 import * as commentLikeActions from "../../store/actions/commentLikeActions";
-import DialogModal from "../../components/UI/DialogModal";
 
 const BlogComments = (props) => {
+    const { colors } = useTheme();
+
     const { blogId } = props.route.params;
 
     const [error, setError] = useState(false);
@@ -168,8 +167,13 @@ const BlogComments = (props) => {
 
     if (isLoading) {
         return (
-            <View style={styles.centered}>
-                <ActivityIndicator size="large" color={Colors.headerBold} />
+            <View
+                style={[
+                    styles.centered,
+                    { backgroundColor: colors.primaryColorLight },
+                ]}
+            >
+                <ActivityIndicator size="large" color={colors.headerBold} />
             </View>
         );
     }
@@ -194,9 +198,22 @@ const BlogComments = (props) => {
     };
 
     return (
-        <View style={styles.container}>
+        <View
+            style={[
+                styles.container,
+                { backgroundColor: colors.primaryColorLight },
+            ]}
+        >
             {(itemSelected.id || replySelected.id) && (
-                <View style={styles.topDeleteBlock}>
+                <View
+                    style={[
+                        styles.topDeleteBlock,
+                        {
+                            borderColor: colors.primaryColor,
+                            backgroundColor: colors.primaryColorLight,
+                        },
+                    ]}
+                >
                     <View style={styles.topDeleteBlockInner}>
                         <View style={styles.topDeleteBlockLeftIconBlock}>
                             <AntDesign
@@ -282,7 +299,15 @@ const BlogComments = (props) => {
                 <View style={styles.inputBlock}>
                     <View>
                         {(replyToId || replyToReplyObj.id) && (
-                            <View style={styles.addReplyBlock}>
+                            <View
+                                style={[
+                                    styles.addReplyBlock,
+                                    {
+                                        borderColor: colors.primaryColor,
+                                        backgroundColor: colors.primaryColor,
+                                    },
+                                ]}
+                            >
                                 <View style={styles.addReplyBlockInner}>
                                     <View>
                                         <Entypo
@@ -344,7 +369,7 @@ const BlogComments = (props) => {
                             right={
                                 <TextInput.Icon
                                     icon={"send"}
-                                    iconColor={Colors.primaryColor}
+                                    iconColor={colors.primaryColor}
                                     disabled={commentValue ? false : true}
                                     onPress={() => {
                                         handleCreateComment();
@@ -374,14 +399,13 @@ export const screenOptions = (navData) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.primaryColorLight,
+
         zIndex: 10,
     },
     centered: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: Colors.backGround,
     },
     buttonSwipe: {
         fontSize: 18,
@@ -399,8 +423,6 @@ const styles = StyleSheet.create({
     topDeleteBlock: {
         padding: 10,
         borderWidth: 1,
-        borderColor: Colors.primaryColor,
-        backgroundColor: Colors.primaryColorLight,
     },
     topDeleteBlockInner: {
         flexDirection: "row",
@@ -408,7 +430,6 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
     },
     inputBlockWrapper: {
-        // backgroundColor: Colors.blogItemBackground,
         justifyContent: "flex-end",
         // borderWidth: 1,
         // marginTop: "10%",
@@ -439,8 +460,6 @@ const styles = StyleSheet.create({
         padding: 5,
         borderTopRightRadius: 10,
         borderTopLeftRadius: 10,
-        borderColor: Colors.primaryColor,
-        backgroundColor: Colors.primaryColor,
     },
     addReplyBlockInner: {
         flexDirection: "row",

@@ -7,12 +7,13 @@ import { Provider } from "react-redux";
 import { combineReducers, applyMiddleware } from "redux";
 import { LogBox } from "react-native";
 
-import { BlogNavigator } from "./navigation/BlogNavigator";
+import BaseAuthNavigator from "./navigation/BaseNavigator";
 import blogReducer from "./store/reducers/blogReducer";
 import authReducer from "./store/reducers/authReducer";
 import blogLikeReducer from "./store/reducers/likeReducer";
 import commentReducer from "./store/reducers/commentReducer";
 import commentLikeReducer from "./store/reducers/commentLikeReducer";
+import themeReducer from "./store/reducers/themeReducer";
 
 const rootReducer = combineReducers({
     blogs: blogReducer,
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
     blogLikes: blogLikeReducer,
     blogComments: commentReducer,
     commentLikes: commentLikeReducer,
+    theme: themeReducer,
 });
 
 const store = configureStore(
@@ -39,10 +41,8 @@ export default function App() {
     LogBox.ignoreAllLogs(); //Ignore all log notifications
 
     return (
-        <NavigationContainer>
-            <Provider store={store}>
-                <BlogNavigator />
-            </Provider>
-        </NavigationContainer>
+        <Provider store={store}>
+            <BaseAuthNavigator />
+        </Provider>
     );
 }

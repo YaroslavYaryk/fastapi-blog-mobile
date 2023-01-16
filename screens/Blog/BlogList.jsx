@@ -25,8 +25,10 @@ import BlogItem from "../../components/elements/BlogItem";
 import Colors from "../../constants/Colors";
 import * as blogActions from "../../store/actions/blogActions";
 import DialogModal from "../../components/UI/DialogModal";
+import { useTheme } from "@react-navigation/native";
 
 const BlogList = (props) => {
+    const { colors } = useTheme();
     const { deleteBlog } = props.route.params;
     const [error, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -80,8 +82,13 @@ const BlogList = (props) => {
 
     if (isLoading) {
         return (
-            <View style={styles.centered}>
-                <ActivityIndicator size="large" color={Colors.headerBold} />
+            <View
+                style={[
+                    styles.centered,
+                    { backgroundColor: colors.backGround },
+                ]}
+            >
+                <ActivityIndicator size="large" color={colors.headerBold} />
             </View>
         );
     }
@@ -105,7 +112,9 @@ const BlogList = (props) => {
     };
 
     return (
-        <View style={styles.container}>
+        <View
+            style={[styles.container, { backgroundColor: colors.backGround }]}
+        >
             <FlatList
                 // onScroll={scrollHandler}
                 // ref={blogs}
@@ -144,6 +153,8 @@ const BlogList = (props) => {
 };
 
 export const screenOptions = (navData) => {
+    const { colors } = useTheme();
+
     return {
         //    // headerShown: false,
         //    headerTitleStyle: {
@@ -155,10 +166,14 @@ export const screenOptions = (navData) => {
         headerLeft: () => (
             <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
                 <Item
+                    style={{ marginTop: 5 }}
                     title="microblog"
-                    color={"white"}
-                    iconName="microblog"
+                    color={colors.blogItemBackground}
+                    iconName={"bars"}
                     icon={FontAwesome5}
+                    onPress={() => {
+                        navData.navigation.toggleDrawer();
+                    }}
                 />
             </HeaderButtons>
         ),
@@ -166,7 +181,7 @@ export const screenOptions = (navData) => {
             <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
                 <Item
                     title="create-outline"
-                    color={"white"}
+                    color={colors.blogItemBackground}
                     iconName="create"
                     icon={Ionicons}
                     onPress={() => {
@@ -181,14 +196,13 @@ export const screenOptions = (navData) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.backGround,
+
         zIndex: 10,
     },
     centered: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: Colors.backGround,
     },
     buttonSwipe: {
         fontSize: 18,

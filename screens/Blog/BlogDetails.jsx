@@ -15,20 +15,19 @@ import {
 } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import { Ionicons } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useTheme } from "@react-navigation/native";
 
 import CustomHeaderButton from "../../components/UI/CustomHeaderButton";
-import BlogItem from "../../components/elements/BlogItem";
-import Colors from "../../constants/Colors";
 import * as blogActions from "../../store/actions/blogActions";
 import * as blogLikeActions from "../../store/actions/likeActions";
 
 const BlogDetails = (props) => {
     const { id } = props.route.params;
+    const { colors } = useTheme();
 
     const { userId } = useSelector((state) => state.auth);
 
@@ -135,14 +134,21 @@ const BlogDetails = (props) => {
 
     if (isLoading) {
         return (
-            <View style={styles.centered}>
-                <ActivityIndicator size="large" color={Colors.headerBold} />
+            <View
+                style={[
+                    styles.centered,
+                    { backgroundColor: colors.backGround },
+                ]}
+            >
+                <ActivityIndicator size="large" color={colors.headerBold} />
             </View>
         );
     }
 
     return (
-        <View style={styles.container}>
+        <View
+            style={[styles.container, { backgroundColor: colors.backGround }]}
+        >
             <ScrollView
                 ItemSeparatorView={ItemSeparatorView}
                 refreshControl={
@@ -153,16 +159,31 @@ const BlogDetails = (props) => {
                     />
                 }
             >
-                <View style={styles.blogWrapper}>
+                <View
+                    style={[
+                        styles.blogWrapper,
+                        { backgroundColor: colors.blogItemBackground },
+                    ]}
+                >
                     <View style={styles.blogInner}>
                         <View style={styles.blogTittleBlockWrapper}>
                             <View style={styles.blogTittleBlock}>
-                                <Text style={styles.blogTittleText}>
+                                <Text
+                                    style={[
+                                        styles.blogTittleText,
+                                        { color: colors.primaryColor },
+                                    ]}
+                                >
                                     {blogDetails.title}
                                 </Text>
                             </View>
                             <View style={styles.blogAuthorBlock}>
-                                <Text style={styles.blogAuthorText}>
+                                <Text
+                                    style={[
+                                        styles.blogAuthorText,
+                                        { color: colors.primarySecondColor },
+                                    ]}
+                                >
                                     {blogDetails.authorName}
                                 </Text>
                             </View>
@@ -178,7 +199,12 @@ const BlogDetails = (props) => {
                                 <View style={styles.commentBlogInner}>
                                     <TouchableOpacity onPress={visitComments}>
                                         <Text
-                                            style={styles.commentBlogTextCount}
+                                            style={[
+                                                styles.commentBlogTextCount,
+                                                {
+                                                    color: colors.backGroundDarker,
+                                                },
+                                            ]}
                                         >
                                             Comments
                                         </Text>
@@ -192,19 +218,26 @@ const BlogDetails = (props) => {
                                             <AntDesign
                                                 name="heart"
                                                 size={24}
-                                                color={Colors.primaryColor}
+                                                color={colors.primaryColor}
                                                 onPress={handlePressUnpressLike}
                                             />
                                         ) : (
                                             <AntDesign
                                                 name="hearto"
                                                 size={24}
-                                                color={Colors.primaryColor}
+                                                color={colors.primaryColor}
                                                 onPress={handlePressUnpressLike}
                                             />
                                         )}
                                     </View>
-                                    <Text style={styles.likeBlogTextCount}>
+                                    <Text
+                                        style={[
+                                            styles.likeBlogTextCount,
+                                            {
+                                                color: colors.primarySecondColor,
+                                            },
+                                        ]}
+                                    >
                                         {blogLikes.length}
                                     </Text>
                                 </View>
@@ -214,7 +247,12 @@ const BlogDetails = (props) => {
                 </View>
                 {blogDetails.authorId == userId && (
                     <View style={styles.deleteButtonBlock}>
-                        <View style={styles.deleteButtonBlockInner}>
+                        <View
+                            style={[
+                                styles.deleteButtonBlockInner,
+                                { backgroundColor: colors.primaryColor },
+                            ]}
+                        >
                             <TouchableOpacity onPress={handleDeleteBlog}>
                                 <Text style={styles.DeleteButtonText}>
                                     Delete
@@ -255,21 +293,19 @@ export const screenOptions = (navData) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.backGround,
+
         zIndex: 10,
     },
     centered: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: Colors.backGround,
     },
     buttonSwipe: {
         fontSize: 18,
         fontWeight: "500",
     },
     blogWrapper: {
-        backgroundColor: Colors.blogItemBackground,
         margin: 5,
         padding: 10,
         borderRadius: 5,
@@ -284,12 +320,10 @@ const styles = StyleSheet.create({
         marginVertical: 5,
     },
     blogTittleText: {
-        color: Colors.primaryColor,
         fontWeight: "500",
         fontSize: 16,
     },
     blogAuthorText: {
-        color: Colors.primarySecondColor,
         fontWeight: "500",
     },
     blogCommentLike: {
@@ -298,7 +332,6 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
     },
     commentBlogTextCount: {
-        color: Colors.backGroundDarker,
         fontWeight: "600",
     },
     likesBlog: {
@@ -314,7 +347,7 @@ const styles = StyleSheet.create({
     },
     likeBlogTextCount: {
         fontSize: 15,
-        color: Colors.primarySecondColor,
+
         fontWeight: "600",
     },
     deleteButtonBlock: {
@@ -323,7 +356,7 @@ const styles = StyleSheet.create({
     deleteButtonBlockInner: {
         width: "100%",
         alignItems: "center",
-        backgroundColor: Colors.primaryColor,
+
         padding: 10,
         borderRadius: 10,
     },
