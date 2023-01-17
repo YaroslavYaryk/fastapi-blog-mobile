@@ -28,8 +28,10 @@ import { useTheme } from "@react-navigation/native";
 import CommentItem from "../../components/elements/CommentItem";
 import * as commentActions from "../../store/actions/commentActions";
 import * as commentLikeActions from "../../store/actions/commentLikeActions";
+import { useTranslation } from "react-i18next";
 
 const BlogComments = (props) => {
+    const { t } = useTranslation();
     const { colors } = useTheme();
 
     const { blogId } = props.route.params;
@@ -86,7 +88,7 @@ const BlogComments = (props) => {
 
     useEffect(() => {
         if (error) {
-            Alert.alert("An error occurred!", error, [{ text: "Okay" }]);
+            Alert.alert(t("An error occurred!"), error, [{ text: t("Okay") }]);
         }
     }, [error]);
 

@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as authActions from "../../store/actions/authActions";
 import AwesomeAlert from "react-native-awesome-alerts";
 import { useTheme } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
@@ -49,6 +50,7 @@ const formReducer = (state, action) => {
 };
 
 const Login = (props) => {
+    const { t } = useTranslation();
     const { colors } = useTheme();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState();
@@ -129,7 +131,7 @@ const Login = (props) => {
             <View
                 style={[
                     styles.centered,
-                    { backgroundColor: colors.background },
+                    { backgroundColor: colors.backGround },
                 ]}
             >
                 <ActivityIndicator size="large" color={colors.headerBold} />
@@ -140,13 +142,13 @@ const Login = (props) => {
     return (
         // <View>
         <View
-            style={[styles.container, { backgroundColor: colors.background }]}
+            style={[styles.container, { backgroundColor: colors.backGround }]}
         >
             <View>
                 <AwesomeAlert
                     show={visible}
                     showProgress={false}
-                    title="Error"
+                    title={t("Error")}
                     message={error}
                     closeOnTouchOutside={true}
                     closeOnHardwareBackPress={false}
@@ -169,16 +171,19 @@ const Login = (props) => {
                 email
                 secureTextEntry={false}
                 autoCapitalize="none"
-                errorText="Please enter a valid email."
+                errorText={t("Please enter a valid email.")}
                 onInputChange={inputChangeHandler}
                 initialValue=""
                 login={true}
-                placeholder="Email"
+                placeholder={t("Email")}
                 style={[
                     styles.input,
-                    { color: colors.text, borderColor: colors.inputBorder },
+                    {
+                        color: colors.text,
+                        borderColor: colors.inputPlaceholderColor,
+                    },
                 ]}
-                placeholderTextColor={colors.text}
+                placeholderTextColor={colors.inputPlaceholderColor}
                 colors={colors}
             />
             <Input
@@ -189,20 +194,21 @@ const Login = (props) => {
                 password
                 minLength={8}
                 autoCapitalize="none"
-                errorText="Please enter a valid password."
+                errorText={t("Please enter a valid password.")}
                 onInputChange={inputChangeHandler}
                 initialValue=""
                 login={true}
-                placeholder="Password"
+                color={colors.inputPlaceholderColor}
+                placeholder={t("Password")}
                 style={[
                     styles.input,
                     {
                         marginBottom: 5,
                         color: colors.text,
-                        borderColor: colors.inputBorder,
+                        borderColor: colors.inputPlaceholderColor,
                     },
                 ]}
-                placeholderTextColor={colors.text}
+                placeholderTextColor={colors.inputPlaceholderColor}
                 colors={colors}
             />
             <TouchableOpacity
@@ -213,7 +219,7 @@ const Login = (props) => {
                 ]}
                 onPress={authHandler}
             >
-                <Text style={styles.loginLabel}>Login</Text>
+                <Text style={styles.loginLabel}>{t("Login")}</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={styles.register}
@@ -221,7 +227,7 @@ const Login = (props) => {
                     props.navigation.navigate("Registration");
                 }}
             >
-                <Text style={styles.registerLabel}>Register</Text>
+                <Text style={styles.registerLabel}>{t("Register")}</Text>
             </TouchableOpacity>
         </View>
         // </View>

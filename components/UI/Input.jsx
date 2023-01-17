@@ -147,7 +147,7 @@ const Input = (props) => {
                     <Ionicons
                         name={hideUnhideTextIcon}
                         size={24}
-                        color="grey"
+                        color={props.color}
                     />
                 </TouchableOpacity>
             )}

@@ -12,6 +12,7 @@ import {
     ActivityIndicator,
     Alert,
     RefreshControl,
+    I18nManager,
 } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
@@ -19,20 +20,21 @@ import { Ionicons } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
 import { Dialog } from "react-native-simple-dialogs";
+import { useTheme } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 
 import CustomHeaderButton from "../../components/UI/CustomHeaderButton";
 import BlogItem from "../../components/elements/BlogItem";
 import Colors from "../../constants/Colors";
 import * as blogActions from "../../store/actions/blogActions";
 import DialogModal from "../../components/UI/DialogModal";
-import { useTheme } from "@react-navigation/native";
 
 const BlogList = (props) => {
+    const { t } = useTranslation();
     const { colors } = useTheme();
     const { deleteBlog } = props.route.params;
     const [error, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-
     const dispatch = useDispatch();
     const isFocused = useIsFocused();
 
@@ -67,7 +69,7 @@ const BlogList = (props) => {
 
     useEffect(() => {
         if (error) {
-            Alert.alert("An error occurred!", error, [{ text: "Okay" }]);
+            Alert.alert(t("An error occurred!"), error, [{ text: t("Okay") }]);
         }
     }, [error]);
 
@@ -144,7 +146,7 @@ const BlogList = (props) => {
 
             <DialogModal
                 image={require("../../assets/icons8-waste.gif")}
-                message={"Blog successfully deleted!!!"}
+                message={t("Blog successfully deleted!!!")}
                 showAlert={showAlert}
                 setShowAlert={setShowAlert}
             />

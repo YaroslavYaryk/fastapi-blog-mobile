@@ -20,12 +20,15 @@ import { useIsFocused } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useTheme } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 
 import CustomHeaderButton from "../../components/UI/CustomHeaderButton";
 import * as blogActions from "../../store/actions/blogActions";
 import * as blogLikeActions from "../../store/actions/likeActions";
 
 const BlogDetails = (props) => {
+    const { t } = useTranslation();
+
     const { id } = props.route.params;
     const { colors } = useTheme();
 
@@ -73,7 +76,7 @@ const BlogDetails = (props) => {
 
     useEffect(() => {
         if (error) {
-            Alert.alert("An error occurred!", error, [{ text: "Okay" }]);
+            Alert.alert(t("An error occurred!"), error, [{ text: t("Okay") }]);
         }
     }, [error]);
 
@@ -206,7 +209,7 @@ const BlogDetails = (props) => {
                                                 },
                                             ]}
                                         >
-                                            Comments
+                                            {t("Comments")}
                                         </Text>
                                     </TouchableOpacity>
                                 </View>
@@ -255,7 +258,7 @@ const BlogDetails = (props) => {
                         >
                             <TouchableOpacity onPress={handleDeleteBlog}>
                                 <Text style={styles.DeleteButtonText}>
-                                    Delete
+                                    {t("Delete")}
                                 </Text>
                             </TouchableOpacity>
                         </View>

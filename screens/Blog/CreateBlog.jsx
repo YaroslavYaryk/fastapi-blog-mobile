@@ -17,10 +17,12 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
 import { useTheme } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 
 import * as blogActions from "../../store/actions/blogActions";
 
 const CreateBlog = (props) => {
+    const { t } = useTranslation();
     const { colors } = useTheme();
     const [error, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -58,7 +60,7 @@ const CreateBlog = (props) => {
 
     useEffect(() => {
         if (error) {
-            Alert.alert("An error occurred!", error, [{ text: "Okay" }]);
+            Alert.alert(t("An error occurred!"), error, [{ text: t("Okay") }]);
         }
     }, [error]);
 
@@ -87,10 +89,10 @@ const CreateBlog = (props) => {
                         required
                         secureTextEntry={false}
                         autoCapitalize="none"
-                        errorText="Please enter a valid title."
+                        errorText={t("Please enter a valid title.")}
                         initialValue=""
                         initiallyValid={false}
-                        placeholder="Title"
+                        placeholder={t("Title")}
                         style={[
                             styles.input,
                             {
@@ -112,9 +114,9 @@ const CreateBlog = (props) => {
                         required
                         secureTextEntry={false}
                         autoCapitalize="none"
-                        errorText="Please enter a valid body."
+                        errorText={t("Please enter a valid body.")}
                         initialValue=""
-                        placeholder="Body"
+                        placeholder={t("Body")}
                         multiline
                         numberOfLines={4}
                         initiallyValid={false}
@@ -156,7 +158,7 @@ const CreateBlog = (props) => {
                                     { color: colors.blogItemBackground },
                                 ]}
                             >
-                                Save
+                                {t("Save")}
                             </Text>
                         </View>
                     </TouchableOpacity>

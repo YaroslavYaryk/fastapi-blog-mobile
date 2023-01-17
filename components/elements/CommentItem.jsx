@@ -14,10 +14,13 @@ import {
 import Colors from "../../constants/Colors";
 import { AntDesign } from "@expo/vector-icons";
 import { useTheme } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
 const CommentItem = (props) => {
+    const { t } = useTranslation();
+
     const { colors } = useTheme();
 
     const {
@@ -124,7 +127,7 @@ const CommentItem = (props) => {
                                     { color: colors.backGroundDarker },
                                 ]}
                             >
-                                Reply
+                                {t("Reply")}
                             </Text>
                         </View>
                     </TouchableOpacity>
@@ -256,7 +259,7 @@ const CommentItem = (props) => {
                                                 },
                                             ]}
                                         >
-                                            Reply
+                                            {t("Reply")}
                                         </Text>
                                     </TouchableOpacity>
                                 </View>

@@ -12,8 +12,11 @@ import {
     Animated,
 } from "react-native";
 import { useTheme } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 
 const BlogItem = (props) => {
+    const { t } = useTranslation();
+
     const { colors } = useTheme();
 
     const { item } = props;

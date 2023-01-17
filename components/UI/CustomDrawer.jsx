@@ -30,6 +30,8 @@ import {
     TransitioningView,
 } from "react-native-reanimated";
 import { useTheme } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
+import i18n from "../../i18n";
 
 const transition = (
     <Transition.Together>
@@ -40,6 +42,8 @@ const transition = (
 );
 
 const CustomDrawer = (props) => {
+    const { t } = useTranslation();
+
     const { colors } = useTheme();
 
     const theme = useSelector((state) => state.theme.theme);
@@ -154,7 +158,7 @@ const CustomDrawer = (props) => {
                                     marginBottom: 5,
                                 }}
                             >
-                                {"user.first_name"} {"user.last_name"}
+                                {t("user.first_name")} {t("user.last_name")}
                             </Text>
                         </View>
                         <Animated.View
@@ -181,6 +185,9 @@ const CustomDrawer = (props) => {
                     padding: 20,
                     borderTopWidth: 1,
                     borderTopColor: colors.backGroundDarker,
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
                 }}
             >
                 <TouchableOpacity
@@ -205,7 +212,29 @@ const CustomDrawer = (props) => {
                                 color: colors.text,
                             }}
                         >
-                            Sign Out
+                            {t("Sign Out")}
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => {
+                        i18n.changeLanguage(
+                            i18n.language === "ukr" ? "en" : "ukr"
+                        );
+                    }}
+                    style={{ paddingVertical: 15 }}
+                >
+                    <View
+                        style={{ flexDirection: "row", alignItems: "center" }}
+                    >
+                        <Text
+                            style={{
+                                fontSize: 15,
+                                marginLeft: 5,
+                                color: colors.text,
+                            }}
+                        >
+                            {i18n.language !== "ukr" ? "en" : "ukr"}
                         </Text>
                     </View>
                 </TouchableOpacity>

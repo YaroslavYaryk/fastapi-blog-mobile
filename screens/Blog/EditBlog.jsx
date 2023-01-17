@@ -32,8 +32,10 @@ import { useTheme } from "@react-navigation/native";
 import DialogModal from "../../components/UI/DialogModal";
 import Colors from "../../constants/Colors";
 import * as blogActions from "../../store/actions/blogActions";
+import { useTranslation } from "react-i18next";
 
 const EditBlog = (props) => {
+    const { t } = useTranslation();
     const { colors } = useTheme();
 
     const { blogId } = props.route.params;
@@ -80,7 +82,7 @@ const EditBlog = (props) => {
 
     useEffect(() => {
         if (error) {
-            Alert.alert("An error occurred!", error, [{ text: "Okay" }]);
+            Alert.alert(t("An error occurred!"), error, [{ text: t("Okay") }]);
         }
     }, [error]);
 
@@ -131,10 +133,10 @@ const EditBlog = (props) => {
                             required
                             secureTextEntry={false}
                             autoCapitalize="none"
-                            errorText="Please enter a valid title."
+                            errorText={t("Please enter a valid title.")}
                             contextMenuHidden={false}
                             initiallyValid={false}
-                            placeholder="Title"
+                            placeholder={t("Title")}
                             cursorColor={colors.primarySecondColor}
                             selectionColor={colors.primarySecondColor}
                             selectTextOnFocus={true}
@@ -159,8 +161,8 @@ const EditBlog = (props) => {
                             required
                             secureTextEntry={false}
                             autoCapitalize="none"
-                            errorText="Please enter a valid body."
-                            placeholder="Body"
+                            errorText={t("Please enter a valid body.")}
+                            placeholder={t("Body")}
                             multiline
                             numberOfLines={4}
                             initiallyValid={false}
@@ -203,7 +205,7 @@ const EditBlog = (props) => {
                                         { color: colors.blogItemBackground },
                                     ]}
                                 >
-                                    Save
+                                    {t("Save")}
                                 </Text>
                             </View>
                         </TouchableOpacity>
@@ -212,7 +214,7 @@ const EditBlog = (props) => {
             </ScrollView>
             <DialogModal
                 image={require("../../assets/icons8-checkmark.gif")}
-                message={"Blog successfully changed!!!"}
+                message={t("Blog successfully changed!!!")}
                 showAlert={showAlert}
                 setShowAlert={setShowAlert}
             />

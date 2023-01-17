@@ -15,6 +15,7 @@ import Input from "../../components/UI/Input";
 import { useDispatch, useSelector } from "react-redux";
 import * as authActions from "../../store/actions/authActions";
 import SuccessPopup from "../../components/UI/SuccessPopup";
+import { useTranslation } from "react-i18next";
 
 import { useTheme } from "@react-navigation/native";
 
@@ -44,6 +45,8 @@ const formReducer = (state, action) => {
 };
 
 const Registration = (props) => {
+    const { t } = useTranslation();
+
     const { colors } = useTheme();
 
     const [isLoading, setIsLoading] = useState(false);
@@ -56,8 +59,8 @@ const Registration = (props) => {
 
     useEffect(() => {
         if (error) {
-            Alert.alert("An Error Occured", error, [
-                { text: "Okay", onPress: setError(null) },
+            Alert.alert(t("An Error Occured"), error, [
+                { text: t("Okay"), onPress: setError(null) },
             ]);
         }
     }, [error]);
@@ -72,7 +75,7 @@ const Registration = (props) => {
             setDontMatchError(null);
         } else {
             setDisabledButton(true);
-            setDontMatchError("passwords don't match.");
+            setDontMatchError(t("passwords don't match."));
         }
     });
 
@@ -129,7 +132,7 @@ const Registration = (props) => {
             <View
                 style={[
                     styles.centered,
-                    { backgroundColor: colors.background },
+                    { backgroundColor: colors.backGround },
                 ]}
             >
                 <ActivityIndicator size="large" color={colors.primary} />
@@ -139,7 +142,7 @@ const Registration = (props) => {
 
     return (
         <View
-            style={[styles.container, { backgroundColor: colors.background }]}
+            style={[styles.container, { backgroundColor: colors.backGround }]}
         >
             <ScrollView>
                 <View style={styles.logoContainer}>
@@ -153,16 +156,19 @@ const Registration = (props) => {
                     email
                     secureTextEntry={false}
                     autoCapitalize="none"
-                    errorText="Please enter a valid email."
+                    errorText={t("Please enter a valid email.")}
                     onInputChange={inputChangeHandler}
                     initialValue=""
                     login={true}
-                    placeholder="Email"
+                    placeholder={t("Email")}
                     style={[
                         styles.input,
-                        { borderColor: colors.inputBorder, color: colors.text },
+                        {
+                            borderColor: colors.inputPlaceholderColor,
+                            color: colors.inputPlaceholderColor,
+                        },
                     ]}
-                    placeholderTextColor={colors.text}
+                    placeholderTextColor={colors.inputPlaceholderColor}
                 />
                 <Input
                     id="username"
@@ -170,16 +176,19 @@ const Registration = (props) => {
                     required
                     secureTextEntry={false}
                     autoCapitalize="none"
-                    errorText="Please enter a valid username."
+                    errorText={t("Please enter a valid username.")}
                     onInputChange={inputChangeHandler}
                     initialValue=""
                     login={true}
-                    placeholder="Username"
+                    placeholder={t("Username")}
                     style={[
                         styles.input,
-                        { borderColor: colors.inputBorder, color: colors.text },
+                        {
+                            borderColor: colors.inputPlaceholderColor,
+                            color: colors.inputPlaceholderColor,
+                        },
                     ]}
-                    placeholderTextColor={colors.text}
+                    placeholderTextColor={colors.inputPlaceholderColor}
                 />
                 <Input
                     id="password"
@@ -189,16 +198,20 @@ const Registration = (props) => {
                     password
                     minLength={8}
                     autoCapitalize="none"
-                    errorText="Please enter a valid password."
+                    errorText={t("Please enter a valid password.")}
                     onInputChange={inputChangeHandler}
                     initialValue=""
                     login={true}
-                    placeholder="Password"
+                    color={colors.inputPlaceholderColor}
+                    placeholder={t("Password")}
                     style={[
                         styles.input,
-                        { borderColor: colors.inputBorder, color: colors.text },
+                        {
+                            borderColor: colors.inputPlaceholderColor,
+                            color: colors.inputPlaceholderColor,
+                        },
                     ]}
-                    placeholderTextColor={colors.text}
+                    placeholderTextColor={colors.inputPlaceholderColor}
                 />
                 <Input
                     id="confirmPassword"
@@ -208,21 +221,22 @@ const Registration = (props) => {
                     password
                     minLength={8}
                     autoCapitalize="none"
-                    errorText="Please enter a valid password."
+                    errorText={t("Please enter a valid password.")}
                     onInputChange={inputChangeHandler}
                     initialValue=""
                     login={true}
                     dontMatchError={dontMatchError}
-                    placeholder="Confirm password"
+                    placeholder={t("Confirm password")}
+                    color={colors.inputPlaceholderColor}
                     style={[
                         styles.input,
                         {
                             marginBottom: 0,
-                            borderColor: colors.inputBorder,
-                            color: colors.text,
+                            borderColor: colors.inputPlaceholderColor,
+                            color: colors.inputPlaceholderColor,
                         },
                     ]}
-                    placeholderTextColor={colors.text}
+                    placeholderTextColor={colors.inputPlaceholderColor}
                 />
             </ScrollView>
             <TouchableOpacity
@@ -233,7 +247,7 @@ const Registration = (props) => {
                 ]}
                 onPress={authHandler}
             >
-                <Text style={styles.loginLabel}>Register</Text>
+                <Text style={styles.loginLabel}>{t("Register")}</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={styles.register}
@@ -241,7 +255,7 @@ const Registration = (props) => {
                     props.navigation.navigate("Login");
                 }}
             >
-                <Text style={styles.registerLabel}>Login</Text>
+                <Text style={styles.registerLabel}>{t("Login")}</Text>
             </TouchableOpacity>
             <SuccessPopup
                 visible={visible}
